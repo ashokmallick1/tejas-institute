@@ -5,8 +5,9 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
+ENV NODE_ENV=development
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm install
 
 # Step 2: Build the Next.js application
 FROM base AS builder
@@ -14,6 +15,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV NODE_ENV=development
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_PUBLIC_DEMO_MODE=true
 
