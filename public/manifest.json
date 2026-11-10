@@ -1,0 +1,42 @@
+{
+  "name": "TEJAS | Institute of Advanced Technology",
+  "short_name": "TEJAS",
+  "description": "Building India's Next-Generation Technologists. Learn While You Work in AI, Cloud, VLSI, and Robotics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08090a",
+  "theme_color": "#0055ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/tejas-logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/tejas-logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "technology", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Student LMS",
+      "url": "/dashboard/student",
+      "description": "Enter the TEJAS Fellow Learning Management System"
+    },
+    {
+      "name": "Admissions CRM",
+      "url": "/crm",
+      "description": "Admissions Lead Pipeline"
+    },
+    {
+      "name": "FDE Fellowship",
+      "url": "/programs/forward-deployment-engineer",
+      "description": "Register for Forward Deployment Engineer Fellowship"
+    }
+  ]
+}

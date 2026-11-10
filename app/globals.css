@@ -1,0 +1,338 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════
+   DESIGN TOKENS
+   Based on production tokens from Linear, Vercel, Scaler
+   ═══════════════════════════════════════════════════════ */
+@layer base {
+  :root {
+    /* Light mode — Scaler-style: clean white + deep navy */
+    --background: 0 0% 100%;
+    --foreground: 220 47% 8%;          /* Scaler #011845 midnight navy */
+    --card: 0 0% 100%;
+    --card-foreground: 220 47% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 47% 8%;
+    --primary: 222 100% 50%;           /* Scaler #0055FF electric royal blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 47% 8%;
+    --muted: 220 13% 95%;
+    --muted-foreground: 220 9% 44%;
+    --accent: 24 100% 50%;             /* Flame orange from TEJAS logo streak */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 222 100% 50%;
+    --radius: 0.5rem;                  /* 8px — Linear/Vercel use tighter radii */
+  }
+
+  .dark {
+    /* Dark mode — Linear production tokens: #08090a canvas */
+    --background: 240 6% 5%;           /* #08090a linear near-black */
+    --foreground: 210 17% 97%;         /* #f7f8f8 linear primary text */
+    --card: 240 5% 7%;                 /* #0f1011 linear panel surface */
+    --card-foreground: 210 17% 97%;
+    --popover: 240 5% 8%;
+    --popover-foreground: 210 17% 97%;
+    --primary: 222 100% 60%;           /* Electric blue, brighter for dark bg */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4% 10%;           /* #141516 linear elevation level 2 */
+    --secondary-foreground: 210 17% 97%;
+    --muted: 240 4% 10%;
+    --muted-foreground: 220 8% 55%;    /* #8a8f98 linear tertiary text */
+    --accent: 24 95% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 4% 14%;              /* rgba(255,255,255,0.08) equivalent */
+    --input: 240 4% 14%;
+    --ring: 222 100% 60%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+
+  html {
+    scroll-behavior: smooth;
+    max-width: 100vw;
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss03" 1;
+    letter-spacing: -0.01em;
+    max-width: 100vw;
+    overflow-x: clip;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+  }
+
+  h1, h2, h3, h4 {
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+
+  ::selection {
+    background: rgba(0, 85, 255, 0.2);
+    color: #0055ff;
+  }
+  .dark ::selection {
+    background: rgba(37, 99, 235, 0.3);
+    color: #93c5fd;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE TOUCH & SCROLL UTILITIES
+   ═══════════════════════════════════════════════════════ */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ═══════════════════════════════════════════════════════
+   NOISE GRAIN TEXTURE — Linear/Vercel production style
+   mix-blend-mode: overlay, opacity 0.42–0.50, tiled 80px
+   ═══════════════════════════════════════════════════════ */
+.texture-noise {
+  position: relative;
+  isolation: isolate;
+}
+.texture-noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}
+.dark .texture-noise::after { opacity: 0.6; }
+
+/* ═══════════════════════════════════════════════════════
+   DOT GRID — Vercel/Linear hero pattern
+   ═══════════════════════════════════════════════════════ */
+.bg-dot-grid {
+  background-image: radial-gradient(circle, hsl(var(--border)) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   GLASSMORPHISM — Linear/Vercel card surfaces
+   rgba(255,255,255,0.03) fill, 1px rgba border
+   ═══════════════════════════════════════════════════════ */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+:root:not(.dark) .glass {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(16px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   CARD — premium with tinted shadow (Stripe technique)
+   Shadow tinted in midnight slate, not muddy black
+   ═══════════════════════════════════════════════════════ */
+.card-premium {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 10px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+}
+.card-premium:hover {
+  border-color: rgba(0, 85, 255, 0.35);
+  transform: translateY(-2px);
+  /* Stripe-style tinted multi-layer shadow */
+  box-shadow:
+    0 4px 12px -2px rgba(13, 23, 56, 0.12),
+    0 12px 32px -4px rgba(0, 0, 0, 0.28);
+}
+.dark .card-premium:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0px -1px 1px rgba(0,0,0,0.11),
+    0px 1px 1px rgba(0,0,0,0.07),
+    0px 3px 2px rgba(0,0,0,0.04),
+    0px 8px 32px rgba(0,0,0,0.35);
+}
+
+/* ═══════════════════════════════════════════════════════
+   GLOW EFFECTS
+   ═══════════════════════════════════════════════════════ */
+.glow-blue {
+  box-shadow: 0 0 80px -20px rgba(0, 85, 255, 0.5);
+}
+.glow-flame {
+  box-shadow: 0 0 80px -20px rgba(249, 115, 22, 0.45);
+}
+
+/* ═══════════════════════════════════════════════════════
+   GRADIENT TEXT UTILITIES
+   Based on Scaler production tokens
+   ═══════════════════════════════════════════════════════ */
+
+/* Scaler exact: #0055FF → #06B6D4 → #0055FF animated */
+.gradient-brand {
+  background: linear-gradient(90deg, #0055FF 0%, #06B6D4 30%, #0055FF 60%, #06B6D4 85%, #0055FF 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* TEJAS flame streak: logo orange-red → amber → gold */
+.gradient-flame {
+  background: linear-gradient(135deg, #E63900 0%, #FF6B00 40%, #FF8C00 70%, #FFD700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Vercel text heading gradient: white → white/75 */
+.gradient-heading {
+  background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.75) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MARQUEE — Scaler masked infinite ticker
+   [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]
+   ═══════════════════════════════════════════════════════ */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SHIMMER — animated gradient highlight
+   ═══════════════════════════════════════════════════════ */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+.shimmer-text {
+  background: linear-gradient(90deg,
+    #0055FF 0%, #06b6d4 20%, #a855f7 40%,
+    #f97316 60%, #0055FF 80%, #06b6d4 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ENTRY ANIMATIONS
+   ═══════════════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.9; transform: scale(1.06); }
+}
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.animate-fade-up    { animation: fadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.animate-fade-in    { animation: fadeIn 0.4s ease-out both; }
+.animate-scale-in   { animation: scaleIn 0.3s ease-out both; }
+.animate-float      { animation: float 6s ease-in-out infinite; }
+.animate-marquee    { animation: marqueeScroll 35s linear infinite; }
+.animate-pulse-glow { animation: pulseGlow 4s ease-in-out infinite; }
+.animate-spin-slow  { animation: spinSlow 20s linear infinite; }
+
+/* stagger delays */
+.delay-75  { animation-delay: 75ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-700 { animation-delay: 700ms; }
+
+/* ═══════════════════════════════════════════════════════
+   SECTION UTILITIES
+   ═══════════════════════════════════════════════════════ */
+.section-glow-blue {
+  background: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(0,85,255,0.10), transparent);
+}
+.section-glow-flame {
+  background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(249,115,22,0.08), transparent);
+}
+.section-glow-center {
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(6,182,212,0.06), transparent);
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAVBAR — Linear production header style
+   background: #0b0b0bcc; backdrop-filter: blur(20px)
+   border-bottom: 1px solid #ffffff14
+   ═══════════════════════════════════════════════════════ */
+.navbar-blur {
+  background: rgba(8, 9, 10, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+:root:not(.dark) .navbar-blur {
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCROLLBAR — ultra minimal
+   ═══════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
+
+html { scroll-behavior: smooth; }

@@ -1,0 +1,24 @@
+{
+  "appId": "in.bhashaai.tejas",
+  "appName": "TEJAS Institute",
+  "webDir": "out",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://tejas.bhashaai.in",
+    "cleartext": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1800,
+      "backgroundColor": "#08090a",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#08090a"
+    },
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
+}
