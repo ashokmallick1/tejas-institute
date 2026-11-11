@@ -2,11 +2,12 @@ import { test, expect } from '@playwright/test';
 
 /**
  * Playwright E2E Test Suite for Live Production Deployment via Coolify on OCI
- * Host URL: http://ehasyzlyv4xiqcregfvcjasu.92.4.71.47.sslip.io
- * Infrastructure: Oracle Cloud (OCI aarch64 / Ampere Altra) + Coolify v4.7.5 + Traefik v3.7
+ * Primary Custom Domain: https://tejas.bhashaai.in (Cloudflare Named Tunnel)
+ * Coolify TryCloudflare / sslip.io overridable via process.env.TEST_URL
+ * Infrastructure: Oracle Cloud (OCI aarch64 / Ampere Altra) + Coolify v4.7.5 + Traefik v3.7 + Cloudflared
  */
 
-const COOLIFY_TEJAS_URL = 'http://ehasyzlyv4xiqcregfvcjasu.92.4.71.47.sslip.io';
+const COOLIFY_TEJAS_URL = process.env.TEST_URL || 'https://tejas.bhashaai.in';
 
 test.describe('TEJAS Platform Live Deployment on Coolify/OCI (@TC_TEJAS_DEPLOY)', () => {
 
@@ -21,6 +22,11 @@ test.describe('TEJAS Platform Live Deployment on Coolify/OCI (@TC_TEJAS_DEPLOY)'
     const response = await page.goto(COOLIFY_TEJAS_URL, { waitUntil: 'domcontentloaded', timeout: 30000 });
     expect(response).not.toBeNull();
     expect(response!.status()).toBe(200);
+    expect(page.url()).toContain(new URL(COOLIFY_TEJAS_URL).hostname);
+
+    if (COOLIFY_TEJAS_URL.includes('bhashaai.in') || COOLIFY_TEJAS_URL.includes('trycloudflare.com')) {
+      expect(response!.headers()['server']?.toLowerCase()).toContain('cloudflare');
+    }
 
     const title = await page.title();
     expect(title).toContain('TEJAS | Institute of Advanced Technology');
